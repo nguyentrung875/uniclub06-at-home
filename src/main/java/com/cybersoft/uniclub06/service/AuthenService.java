@@ -7,5 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AuthenService {
-    public String checkLogin(AuthenRequest request);
+    public boolean checkLogin(AuthenRequest request);
+    public String login(AuthenRequest request);
 }
