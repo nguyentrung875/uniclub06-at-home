@@ -3,6 +3,7 @@ package com.cybersoft.uniclub06.controller;
 import com.cybersoft.uniclub06.request.AuthenRequest;
 import com.cybersoft.uniclub06.response.BaseResponse;
 import com.cybersoft.uniclub06.service.AuthenService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Encoders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class AuthenController {
     private AuthenService authenService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthenRequest request){
+    public ResponseEntity<?> login(@RequestBody AuthenRequest request) throws JsonProcessingException {
 
 //        SecretKey key = Jwts.SIG.HS256.key().build(); //or HS384.key() or HS512.key()
 //        String secretString = Encoders.BASE64.encode(key.getEncoded());
