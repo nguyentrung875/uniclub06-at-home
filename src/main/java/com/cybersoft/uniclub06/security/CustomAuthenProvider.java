@@ -1,5 +1,6 @@
 package com.cybersoft.uniclub06.security;
 
+import com.cybersoft.uniclub06.entity.RoleEntity;
 import com.cybersoft.uniclub06.entity.UserEntity;
 import com.cybersoft.uniclub06.repository.UserRepository;
 import com.cybersoft.uniclub06.request.AuthenRequest;
@@ -9,10 +10,13 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class CustomAuthenProvider implements AuthenticationProvider {
@@ -31,7 +35,12 @@ public class CustomAuthenProvider implements AuthenticationProvider {
         UserEntity userEntity = userRepository.findUserEntitiesByEmail(username);
 
         if (userEntity != null && passwordEncoder.matches(password, userEntity.getPassword())){
-            return new UsernamePasswordAuthenticationToken("", "", new ArrayList<>());
+            List<GrantedAuthority> authorityList = new ArrayList<>();
+
+            RoleEntity role = userEntity.getRole();
+            authorityList.add(new SimpleGrantedAuthority(role.getName()));
+
+            return new UsernamePasswordAuthenticationToken(username, "", authorityList);
         } else {
             return null;
         }
